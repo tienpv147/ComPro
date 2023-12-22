@@ -107,7 +107,7 @@ problem.post<{ name: string },
                 sourcecode: code,
                 language: current_lang,
                 timeLimit: 10,
-                memoryLimit: 1000,
+                memoryLimit: 100,
             };
             payload = mapTestCases(specProblemJson.test || [], payload);
 
@@ -120,11 +120,12 @@ problem.post<{ name: string },
                 .then(async (resp) => {
                     if (resp.status == 200) {
                         const respData = resp.data;
+                        const testCasesResult = respData.testCasesResult;
                         let submission: Submission[] = [];
                         let passed: boolean = true;
 
-                        if (respData.testCasesResult) {
-                            const testCases = convertTestCasesResult(respData.testCasesResult);
+                        if (Object.keys(testCasesResult).length !== 0) {
+                            const testCases = convertTestCasesResult(testCasesResult);
 
                             testCases.forEach((testCase, id) => {
                                 if (testCase.verdictStatusCode !== StatusResponseCodes["Accepted"]) {
@@ -145,6 +146,19 @@ problem.post<{ name: string },
                                     passed = false;
                                 }
                             });
+                        } else {
+                            submission.push({
+                                problem_name: problem_name,
+                                status: respData.verdict,
+                                error: respData.error,
+                                time: respData.dateTime,
+                                runtime: respData.compilationDuration,
+                                language: current_lang,
+                                memory: Math.random() * 80,
+                                code_body: code,
+                            });
+
+                            passed = false;
                         }
 
                         if (passed) {
