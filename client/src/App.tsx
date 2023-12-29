@@ -13,7 +13,7 @@ import UserRatings from "./components/UserRatings";
 export const TOKEN_STORAGE_KEY = "authToken";
 export const ID_STORAGE_KEY = "id";
 // export const API_URL = "https://fire-code-api.vercel.app";
-export const API_URL: string = "http://localhost:8085";
+export const API_URL: string = process.env.REACT_APP_API_URL || "";
 
 function App() {
     const [token, setToken] = useState(localStorage.getItem(TOKEN_STORAGE_KEY));

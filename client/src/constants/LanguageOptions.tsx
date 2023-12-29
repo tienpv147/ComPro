@@ -7,8 +7,8 @@ export const languageOptions = [
     // },
     {
         id: 62,
-        name: "Java (OpenJDK 13.0.1)",
-        label: "Java (OpenJDK 13.0.1)",
+        name: "Java (OpenJDK 11)",
+        label: "Java (OpenJDK 11)",
         value: "java",
     },
     {
